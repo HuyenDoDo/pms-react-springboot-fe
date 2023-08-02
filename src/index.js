@@ -1,17 +1,60 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import TagPage from "./pages/TagPage/TagPage";
+import PostPage from "./pages/PostPage/PostPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import HomePage from "./pages/HomePage/HomePage";
+import { Provider } from "react-redux";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+// Bootstrap Bundle JS
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "bootstrap-icons/font/bootstrap-icons.css";
+
+import NewPostForm from "./pages/PostPage/NewPostForm/NewPostForm";
+import EditPostForm from "./pages/PostPage/EditPostForm/EditPostForm";
+import store from "./redux/store";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/posts",
+        element: <PostPage />,
+      },
+      {
+        path: "/posts/new",
+        element: <NewPostForm />,
+      },
+      {
+        path: "/posts/:postId/edit",
+        element: <EditPostForm />,
+      },
+      {
+        path: "/tags",
+        element: <TagPage />,
+      },
+    ],
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
